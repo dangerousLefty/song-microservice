@@ -7,26 +7,28 @@ phases:
 
   pre_build:
     commands:
-      - echo Build started on `date`
+      - echo "Build started on $(date)"
       - java -version
       - mvn -version
-      - echo Current directory:
+      - echo "Current directory:"
       - pwd
-      - echo Listing project files:
+      - echo "Listing project files:"
       - ls -lah
 
   build:
     commands:
-      - echo Running Maven build
+      - echo "Running Maven build"
       - mvn clean package -DskipTests
 
   post_build:
     commands:
-      - echo Preparing CodeDeploy artifact
+      - echo "Preparing CodeDeploy artifact"
       - cp target/*.jar songMicroservice.jar
       - chmod +x scripts/start_server.sh
       - chmod +x scripts/stop_server.sh
+      - echo "Root directory contents:"
       - ls -lah
+      - echo "Scripts directory contents:"
       - ls -lah scripts
 
 artifacts:
