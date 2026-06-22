@@ -10,6 +10,10 @@ phases:
       - echo Build started on `date`
       - java -version
       - mvn -version
+      - echo Current directory:
+      - pwd
+      - echo Listing project files:
+      - ls -lah
 
   build:
     commands:
@@ -18,10 +22,17 @@ phases:
 
   post_build:
     commands:
-      - echo Build completed on `date`
-      - ls -lah target
+      - echo Preparing CodeDeploy artifact
+      - cp target/*.jar songMicroservice.jar
+      - chmod +x scripts/start_server.sh
+      - chmod +x scripts/stop_server.sh
+      - ls -lah
+      - ls -lah scripts
 
 artifacts:
   files:
-    - target/*.jar
-  discard-paths: yes
+    - songMicroservice.jar
+    - appspec.yml
+    - scripts/start_server.sh
+    - scripts/stop_server.sh
+  discard-paths: no
