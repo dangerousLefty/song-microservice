@@ -2,6 +2,7 @@ package com.hamza.songmicroservice.controller;
 
 import com.hamza.songmicroservice.model.Song;
 import com.hamza.songmicroservice.exception.SongIdentifierExistsException;
+import com.hamza.songmicroservice.publication.SongPublicationService;
 import com.hamza.songmicroservice.service.SongService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,9 +19,14 @@ public class SongController {
     private static final Logger logger = LoggerFactory.getLogger(SongController.class);
 
     private final SongService songService;
+    private final SongPublicationService songPublicationService;
 
-    public SongController(SongService songService) {
+    public SongController(
+            SongService songService,
+            SongPublicationService songPublicationService
+    ) {
         this.songService = songService;
+        this.songPublicationService = songPublicationService;
     }
 
     @GetMapping("/{songId}")
@@ -36,7 +42,7 @@ public class SongController {
     public ResponseEntity<Void> publishSong(@RequestBody Song song) {
         logger.info("Publishing song with id: {}", song.getSongId());
 
-        songService.storeSong(song);
+        songPublicationService.publishSong(song);
 
         return ResponseEntity
                 .created(URI.create("/songs/" + song.getSongId()))

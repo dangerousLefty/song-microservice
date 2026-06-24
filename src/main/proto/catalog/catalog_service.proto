@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package catalog;
+
+option java_multiple_files = true;
+option java_package = "com.hamza.songmicroservice.grpc.catalog";
+option java_outer_classname = "CatalogServiceProto";
+
+service CatalogService {
+  rpc GetSong(SongIdentifier) returns (Song) {}
+  rpc PublishSong(Song) returns (Empty) {}
+}
+
+message SongIdentifier {
+  string id = 1;
+}
+
+message Song {
+  string id = 1;
+  string author_id = 2;
+  int64 release_date = 3;
+  int64 duration_in_seconds = 4;
+  string artifact_uri = 5;
+}
+
+message Empty {}
